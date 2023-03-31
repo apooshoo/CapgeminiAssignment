@@ -1,0 +1,46 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Jon's doing his best!</h1>
+    @if (Model.IsEmailAddressShow)
+    {
+        <form method="post" asp-page-handler="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <label asp-for="EmailAddress" class="control-label"></label>
+            <input asp-for="EmailAddress" class="form-control" />
+            <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+    }
+    @if (Model.IsInputAllowed)
+    {
+        <form method="post" asp-page-handler="SubmitCode">
+            <div class="form-group">
+                <label asp-for="InputOtpCode" class="control-label"></label>
+                <input asp-for="InputOtpCode" class="form-control" />
+                <input type="hidden" asp-for="OtpSessionId" />
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" />
+            </div>
+        </form>
+    }
+    @Html.DisplayFor(model => model.Message)
+    <br/>
+    @if (Model.EmailSentToUser?.Length > 0)
+    {
+        @Html.DisplayFor(model => model.EmailSentToUser)
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
